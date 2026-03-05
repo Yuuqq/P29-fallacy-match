@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📰</text></svg>" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>P29 逻辑谬误连连看</title>
+    <link rel="stylesheet" href="../shared/design-tokens.css" />
+<link rel="stylesheet" href="./styles.css" />
+  <meta name="description" content="逻辑谬误连连看。P29 逻辑谬误连连看" />
+  <meta property="og:title" content="P29 逻辑谬误连连看" />
+  <meta property="og:description" content="逻辑谬误连连看 — 前端纯静态新闻工具" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yuuqq.github.io/P29-fallacy-match/" />
+</head>
+<body>
+  <main class="app">
+    <header class="hero card">
+      <div class="heroMain">
+        <h1>逻辑谬误连连看</h1>
+        <p class="lead">把评论归类到对应谬误类型：桌面端可拖拽，移动端可用“下拉选择”归类。</p>
+        <p class="subtle">题库为静态示例，用于训练识别信号与反问方式；不涉及立场判断。进度与掌握度仅保存在本机。</p>
+      </div>
+      <div class="heroActions">
+        <button id="openLibraryBtn" type="button" class="ghost">图鉴 / 汇总</button>
+        <button id="resetProgressBtn" type="button" class="ghost danger">重置进度</button>
+      </div>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <div class="toolbar">
+          <label for="sizeSelect">
+            关卡规模
+            <select id="sizeSelect">
+              <option value="6" selected>6</option>
+              <option value="8">8</option>
+              <option value="10">10</option>
+            </select>
+          </label>
+          <label for="modeSelect">
+            模式
+            <select id="modeSelect">
+              <option value="learn" selected>学习</option>
+              <option value="review">复习（弱项优先）</option>
+            </select>
+          </label>
+          <label for="instantToggle" class="switch">
+            <span>即时判定</span>
+            <input id="instantToggle" type="checkbox" checked />
+          </label>
+          <button id="newRoundBtn" type="button">新一关</button>
+          <span id="levelPill" class="pill">关卡: 1</span>
+        </div>
+
+        <section class="twoCol">
+          <div>
+            <h2>评论卡片（可拖拽/可选择归类）</h2>
+            <div id="comments" class="stack" aria-label="评论卡片区"></div>
+          </div>
+          <div>
+            <h2>谬误目标槽</h2>
+            <div id="targets" class="stack" aria-label="谬误目标区"></div>
+          </div>
+        </section>
+
+        <div class="actions">
+          <button id="checkBtn" type="button">判分</button>
+          <button id="revealBtn" type="button" class="ghost">查看答案</button>
+          <button id="nextBtn" type="button" class="ghost">下一关</button>
+          <button id="resetRoundBtn" type="button" class="ghost">重置本关</button>
+        </div>
+        <p id="status" class="status" aria-live="polite">状态: 未开始</p>
+
+        <details class="tips">
+          <summary>学习提示（识别信号）</summary>
+          <ul>
+            <li><strong>先找结论</strong>：这句话想让你相信什么？</li>
+            <li><strong>再看理由</strong>：理由是否在“偷换概念/跳过证据/转移话题”？</li>
+            <li><strong>最后反问</strong>：如果要让它成立，需要哪些证据或前提？</li>
+          </ul>
+        </details>
+      </article>
+
+      <article class="card">
+        <h2>学习面板</h2>
+        <div id="learnPanel" class="learnPanel">点击右侧“解释”按钮或在图鉴中选择一个谬误类型，这里会显示定义、识别信号与反制提问。</div>
+
+        <h2>本关错题</h2>
+        <div id="mistakes" class="mistakes">（完成判分后会在这里汇总错题）</div>
+      </article>
+    </section>
+
+    <section id="libraryPanel" class="card library hidden" aria-label="谬误图鉴与汇总">
+      <div class="libraryHead">
+        <h2>谬误图鉴 / 汇总</h2>
+        <button id="closeLibraryBtn" type="button" class="ghost">关闭</button>
+      </div>
+
+      <div id="summaryGrid" class="summaryGrid"></div>
+
+      <div class="filterBar">
+        <input id="searchInput" type="search" placeholder="搜索谬误（名称/信号/反问）…"  aria-label="搜索关键词"/>
+        <select id="filterSelect" aria-label="筛选类别">
+          <option value="all" selected>全部</option>
+          <option value="weak">弱项优先</option>
+          <option value="mastered">已掌握</option>
+        </select>
+      </div>
+
+      <div id="libraryList" class="libraryList"></div>
+    </section>
+
+    <footer class="footer subtle">
+      <p><strong>隐私说明：</strong>进度与掌握度保存于本机浏览器（localStorage），不会上传。</p>
+      <p><strong>提示：</strong>拖拽在部分移动端浏览器兼容性有限，推荐使用每张卡片的“归类下拉框”。</p>
+    </footer>
+  </main>
+  <script src="./pm-metrics.js" defer></script>
+  <script src="./app.js" defer></script>
+
+  <!-- Cross-Project Navigation -->
+  <nav style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;font-size:13px;border-top:1px solid #e5e5e5;margin-top:16px;color:#666;">
+    <a href="https://yuuqq.github.io/_codex/" style="text-decoration:none;">📋 工具箱导航</a>
+    <span style="opacity:.4">P29</span>
+  </nav>
+
+  <!-- Privacy Notice -->
+  <div style="text-align:center;padding:12px 16px;font-size:12px;color:#888;border-top:1px solid #eee;margin-top:24px;">
+    🔒 隐私提示：本工具所有数据处理均在您的浏览器本地完成，不会上传任何数据至服务器。
+  </div></body>
+</html>
