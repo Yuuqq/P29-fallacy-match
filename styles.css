@@ -393,7 +393,7 @@ details[open] summary { margin-bottom: 8px; }
 }
 
 /* =====================================================================
- * v2.4 Tier-1 deep polish (per-tool) — applies ui-ux-pro-max patterns
+ * v2.4.1 deep polish (Tier-1 with tool-specific blocks) — applies ui-ux-pro-max patterns
  * Uses each tool's existing --accent / --line / --card / --ink tokens.
  * All rules are scoped to existing classes in this tool, so they don't
  * leak globally and don't affect other tools.
