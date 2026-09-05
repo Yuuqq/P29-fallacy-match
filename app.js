@@ -185,7 +185,7 @@
   }
 
   let progress = readProgress();
-  const state = { round: { fallacyIds: [], checked: false } };
+  const state = { round: { fallacyIds: [], checked: false, revealed: false } };
 
   function fallacyStat(id) {
     if (!progress.fallacies[id]) progress.fallacies[id] = { attempts: 0, correct: 0, streak: 0, lastTs: 0 };
@@ -392,34 +392,38 @@
         });
       }
 
-      // progress updates (mastery by正确类型)
-      if (item.dataset.scenarioId) {
-        const st = scenarioStat(item.dataset.scenarioId);
-        st.attempts += 1;
-        st.correct += isOk ? 1 : 0;
-        st.lastTs = Date.now();
-      }
-      if (answer) {
-        const fs = fallacyStat(answer);
-        fs.attempts += 1;
-        fs.correct += isOk ? 1 : 0;
-        fs.streak = isOk ? fs.streak + 1 : 0;
-        fs.lastTs = Date.now();
+      // progress updates (mastery by正确类型) — 已看答案的轮次不计入掌握度
+      if (!state.round.revealed) {
+        if (item.dataset.scenarioId) {
+          const st = scenarioStat(item.dataset.scenarioId);
+          st.attempts += 1;
+          st.correct += isOk ? 1 : 0;
+          st.lastTs = Date.now();
+        }
+        if (answer) {
+          const fs = fallacyStat(answer);
+          fs.attempts += 1;
+          fs.correct += isOk ? 1 : 0;
+          fs.streak = isOk ? fs.streak + 1 : 0;
+          fs.lastTs = Date.now();
+        }
       }
     });
 
-    progress.rounds += 1;
-    progress.total_attempts += total;
-    progress.total_correct += ok;
-    writeProgress(progress);
+    if (!state.round.revealed) {
+      progress.rounds += 1;
+      progress.total_attempts += total;
+      progress.total_correct += ok;
+      writeProgress(progress);
 
-    const recent = readRecent();
-    items.forEach((i) => i.dataset.scenarioId && recent.push(i.dataset.scenarioId));
-    writeRecent(recent);
+      const recent = readRecent();
+      items.forEach((i) => i.dataset.scenarioId && recent.push(i.dataset.scenarioId));
+      writeRecent(recent);
+    }
 
     state.round.checked = true;
     renderMistakes(mistakes);
-    renderStatusLine(`判分完成：${ok}/${total} 正确${unassigned ? `（未归类 ${unassigned}）` : ""}`);
+    renderStatusLine(`判分完成：${ok}/${total} 正确${unassigned ? `（未归类 ${unassigned}）` : ""}${state.round.revealed ? "；已看答案，不计入掌握度" : ""}`);
 
     try {
       window.pmMetrics?.markTaskComplete?.("verification_core_task", { round_level: progress.level, correct: ok, total });
@@ -427,6 +431,7 @@
   }
 
   function revealAnswers() {
+    state.round.revealed = true;
     const items = getItems();
     items.forEach((item) => assignItem(item, item.dataset.answerId || ""));
     items.forEach((item) => {
@@ -451,6 +456,7 @@
       els.comments.appendChild(item);
     });
     state.round.checked = false;
+    state.round.revealed = false;
     clearMistakes();
     updateDropHints();
     renderStatusLine("本关已重置");
@@ -554,6 +560,7 @@
     const fallacyIds = pickFallacies(size, mode);
     state.round.fallacyIds = fallacyIds;
     state.round.checked = false;
+    state.round.revealed = false;
 
     const optionsHtml = roundOptionHtml(fallacyIds);
 
@@ -587,7 +594,7 @@
         </div>
         <div class="assign">
           <div>归类到</div>
-          <select data-role="assign">${optionsHtml}</select>
+          <select data-role="assign" aria-label="归类到">${optionsHtml}</select>
         </div>
         <div class="feedback"></div>
       </div>`
