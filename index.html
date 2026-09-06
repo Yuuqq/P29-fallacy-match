@@ -8,6 +8,7 @@
   <meta name="color-scheme" content="light dark">
   <title>P29 逻辑谬误连连看</title>
     <link rel="stylesheet" href="../shared/design-tokens.css" />
+<link rel="stylesheet" href="https://yuuqq.github.io/shared/design-tokens.css" />
 <link rel="stylesheet" href="./styles.css" />
   <meta name="description" content="逻辑谬误连连看：拖拽或下拉将22种谬误评论归类到对应类型，即时反馈、进度追踪、图鉴汇总。培养批判性阅读与逻辑分析能力。" />
   <meta property="og:title" content="P29 逻辑谬误连连看" />
@@ -39,7 +40,7 @@ a[href]::after{content:" (" attr(href) ")";font-size:9pt;color:#666}
       </div>
     </header>
 
-    <section class="card"><details class="teach-card" open>
+    <section class="card"><details class="teach-card">
     <summary>🎓 逻辑谬误与批判性阅读</summary>
     <p>逻辑谬误（Logical Fallacy）是看似合理但实际上不成立的论证方式。在新闻消费、社交媒体讨论和政治话语中，谬误无处不在。识别它们是新闻素养的核心技能：</p>
     <ul style="margin:8px 0 0 16px;font-size:.88rem;line-height:1.8">
@@ -153,7 +154,21 @@ a[href]::after{content:" (" attr(href) ")";font-size:9pt;color:#666}
   <!-- Privacy Notice -->
   <div style="text-align:center;padding:12px 16px;font-size:12px;color:#888;border-top:1px solid #eee;margin-top:24px;">
     🔒 隐私提示：本工具所有数据处理均在您的浏览器本地完成，不会上传任何数据至服务器。
-  <script src="../shared/releases/v2.6/loader.js" data-modules="dark,kbd,cmd,toast,onboarding,pedagogy-p1,pedagogy-p2,nav"></script>
+  <script>
+(function () {
+  var modules = "dark,kbd,cmd,toast,onboarding,pedagogy-p1,pedagogy-p2,nav";
+  var s = document.createElement("script");
+  s.src = "../shared/releases/v2.6/loader.js";
+  s.setAttribute("data-modules", modules);
+  s.onerror = function () {
+    var t = document.createElement("script");
+    t.src = "https://yuuqq.github.io/shared/releases/v2.6/loader.js";
+    t.setAttribute("data-modules", modules);
+    document.body.appendChild(t);
+  };
+  document.body.appendChild(s);
+})();
+</script>
   <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{})}</script>
 
 </body>
