@@ -165,7 +165,10 @@
   function writeProgress(p) {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
-    } catch (_e) {}
+    } catch (_e) {
+      if (window.showToast) window.showToast("无法保存进度：存储空间不足或已被浏览器禁用。", "error");
+      else alert("无法保存进度：存储空间不足或已被浏览器禁用。");
+    }
   }
 
   function readRecent() {
@@ -356,6 +359,7 @@
   }
 
   function checkRound() {
+    if (state.round.checked) return;
     const items = getItems();
     let ok = 0;
     let total = 0;
@@ -436,6 +440,7 @@
       const feedback = item.querySelector(".feedback");
       if (feedback) feedback.textContent = `✅ 答案：${fallacyById[answer]?.name || answer}`;
     });
+    state.round.checked = true;
     renderStatusLine("已显示答案（不计入掌握度）");
   }
 
