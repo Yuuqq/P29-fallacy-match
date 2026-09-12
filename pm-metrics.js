@@ -35,7 +35,9 @@
   function writeEvents(events) {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(events.slice(-500)));
-    } catch (_e) {}
+    } catch (_e) {
+      if (window.showToast) window.showToast("无法保存进度：存储空间不足或已被浏览器禁用。", "error");
+    }
   }
 
   function basePayload(extra) {

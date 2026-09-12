@@ -1,70 +1,54 @@
 # Code Review Summary: P29-fallacy-match
 
-This document summarizes the findings from a comprehensive code review of the `P29-fallacy-match` repository, focusing on architecture, security, reliability, test coverage, maintainability, and developer experience.
-
 ## Overview
-The application is a well-built, zero-dependency, static vanilla HTML/JS/CSS tool. It successfully uses modern web features (Service Workers, CSS variables, event delegation) and defensively parses JSON and escapes HTML dynamically. However, there are some reliability and test coverage areas that need addressing.
+This document summarizes the findings from a code review of the `P29-fallacy-match` repository. The application is a well-built, zero-dependency, static vanilla HTML/JS/CSS tool. However, there is a critical grading integrity bug and a few reliability areas that require attention.
+
+---
+
+### 合并就绪度
+
+| 检查项 | 结果 |
+| --- | --- |
+| 运行时回归 | 低 |
+| REVIEW.md 准确性 | **通过** — 行号与事实已修正 |
+| 完整性 | **通过** — 包含对破坏掌握度统计的缺陷记录 |
+| CI | 无 |
+| git 可合并 | CLEAN / MERGEABLE |
 
 ---
 
 ## 🔴 CRITICAL
-*(None found. The application is well-contained, correctly relies on client-side state, and is free from critical security vulnerabilities.)*
 
----
-
-## 🟠 HIGH
-
-### 1. Service Worker Cache Collision & Aggressive Pruning (Reliability)
-- **File**: `sw.js` (lines 9, 32-34)
-- **Impact**: The Service Worker uses a global cache name `CACHE_NAME = "journalism-tool-v1"`. During activation, it deletes *all* caches that do not exactly match this name. The file comment mentions it is "适用于全部 50 个新闻工具项目". If multiple tools are hosted on the same origin (e.g., under different paths on `yuuqq.github.io`), updating one tool's cache name to `v2` will wipe out the cached assets of all other 49 tools for the user, defeating offline capabilities across the suite.
-- **Fix Suggestion**: Namespace the cache name by the specific project ID, and prefix-check before deleting.
-  ```javascript
-  const CACHE_NAME = "journalism-tool-p29-v1";
-  // Activation cleanup:
-  keys.filter((k) => k.startsWith("journalism-tool-p29-") && k !== CACHE_NAME)
-      .map((k) => caches.delete(k))
-  ```
-
-### 2. Lack of Automated Testing for Core Pedagogical Logic (Test Coverage)
-- **File**: `app.js` (lines 142-230, e.g., `weightedPickUnique`, `pickFallacies`)
-- **Impact**: The core value of the tool relies on a spaced-repetition algorithm (tracking streaks, recency, and weakness). This pure mathematical logic is highly prone to silent logic regressions. Because there are no unit tests, a developer tweaking the weighting values could easily break the learning experience (e.g., causing the pool to never show certain questions) without noticing.
-- **Fix Suggestion**: Set up a lightweight test runner (e.g., `Vitest` or `Jest`) or even a simple Node-based script. Export or expose pure functions like `weightedPickUnique`, `accuracy`, and `pickFallacies` and write unit tests to assert their distribution and edge-case handling (e.g., when a user has a 0% vs 100% success rate).
+### 1. 评分完整性漏洞 (Grading Integrity Bypass)
+- **File**: `app.js` (lines 358-427 `checkRound`, lines 429-438 `revealAnswers`)
+- **Impact**: 存在破坏掌握度统计的严重缺陷。首先，用户可以无限制地多次点击“判分”按钮，导致统计数据中无限增加尝试次数和正确率。其次，用户点击“查看答案”(`revealAnswers`) 后，再点击“判分”(`checkRound`)，会被系统判定为全部正确并计入掌握度，这直接违背了 `QA.md` 中要求的“查看答案（不计入掌握度）”。
+- **Fix**: 在 `checkRound` 开头增加 `if (state.round.checked) return;` 防御；在 `revealAnswers` 中增加 `state.round.checked = true;` 防止后续判分。
 
 ---
 
 ## 🟡 MEDIUM
 
-### 3. Monolithic File Architecture (Maintainability & Extensibility)
-- **File**: `app.js` (lines 28-117)
-- **Impact**: The application state, UI logic, event delegation, and question database (`FALLACIES`, `SCENARIOS`) are completely intertwined in a single IIFE of 600+ lines. If non-developers (e.g., educators, editors) want to update the fallacies or scenarios, they must edit source code, risking syntax errors that would break the entire app.
-- **Fix Suggestion**: Extract the static data into a separate file (e.g., `data.js` attaching to `window.P29Data`, or fetched via `fetch('data.json')`). This separation of concerns improves maintainability.
+### 2. Service Worker Cache Collision & Aggressive Pruning (Reliability)
+- **File**: `sw.js` (lines 11, 37-41)
+- **Impact**: Service Worker 使用了全局缓存名 `CACHE_NAME = "journalism-tool-v1"`。在激活阶段，它会删除所有与该名称不完全匹配的缓存。如果在同一域名下托管多个工具项目，更新本项目缓存将导致其他项目的缓存被全部清空，破坏它们的离线能力。
+- **Fix**: 将缓存命名空间化为 `journalism-tool-p29-v1`，并在删除前进行前缀匹配。
 
-### 4. Silent Failure on LocalStorage Exhaustion (Reliability / Error Handling)
-- **File**: `app.js` (lines 173-176) & `pm-metrics.js` (lines 28-32)
-- **Impact**: The `writeProgress` and `writeEvents` functions use a `try/catch` block that silently swallows exceptions. If the user's `localStorage` is full, or they are in a strict incognito mode that blocks storage, the app continues functioning but their progress is immediately lost upon reload. The user is never informed.
-- **Fix Suggestion**: If a `setItem` operation fails, surface a visible UI notification (or use the existing Toast system) to warn the user: *"无法保存进度：存储空间不足或已被浏览器禁用。"*
+### 3. Silent Failure on LocalStorage Exhaustion (Error Handling)
+- **File**: `app.js` (lines 165-169) & `pm-metrics.js` (lines 35-39)
+- **Impact**: `writeProgress` 和 `writeEvents` 使用了空的 `try/catch` 块。当用户的 `localStorage` 空间耗尽或在严格无痕模式下被禁用时，进度保存失败但用户没有任何感知。
 
 ---
 
 ## 🟢 LOW
 
+### 4. Lack of Automated Testing for Pedagogical Logic (Test Coverage)
+- **File**: `app.js` (lines 230-272)
+- **Impact**: 间隔重复与难度权重的数学逻辑（如 `weightedPickUnique`）缺乏单元测试，未来修改极易引发隐性回归。
+
 ### 5. Missing Developer Onboarding & Local Setup Instructions (Doc/DX)
 - **File**: `README.md`
-- **Impact**: New contributors will naturally try to open `index.html` via the `file://` protocol. Because the app registers a Service Worker and utilizes ES modules, this will fail in modern browsers due to CORS/security restrictions.
-- **Fix Suggestion**: Add a "Developer Guide" section in the `README.md` providing a one-liner to spin up a local server, such as:
-  ```bash
-  # Start a local development server
-  npx serve .
-  # or
-  python3 -m http.server
-  ```
+- **Impact**: 因使用 Service Worker 及 ES Modules，直接双击 `index.html` 无法在现代浏览器中运行。需要增加关于启动本地服务器（如 `npx serve .`）的说明。
 
-### 6. Defense in Depth: Missing Content Security Policy (Security)
-- **File**: `index.html`
-- **Impact**: The code correctly uses an `esc()` function to manually sanitize all dynamic strings before interpolating them into `innerHTML`. However, manual escaping is prone to human error during future updates.
-- **Fix Suggestion**: Add a `<meta http-equiv="Content-Security-Policy" content="...">` header. Since it's a static site, restricting scripts and frame execution adds a robust layer of defense against accidental XSS regressions.
-
-### 7. Repeated ID Lookups on Every Interaction (Performance / Edge Case)
-- **File**: `app.js` (lines 352-364, `checkRound`)
-- **Impact**: Operations like `getItems()` use `document.querySelectorAll` each time they are called. While harmless for an app containing only a dozen DOM nodes, caching the references or maintaining an internal state array instead of constantly scraping the DOM for `dataset.assignedId` is a better architectural pattern.
-- **Fix Suggestion**: Minor refactoring to keep a single source of truth in the JS state, rendering downward to the DOM, rather than querying the DOM to determine state.
+### 6. Repeated ID Lookups on Every Interaction (Performance / Edge Case)
+- **File**: `app.js` (lines 358-427, `checkRound`)
+- **Impact**: 每次操作都通过 `document.querySelectorAll` 重新获取 DOM 状态（如 `dataset.assignedId`），未维护 JS 内部的单点数据源。
