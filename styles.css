@@ -1,21 +1,21 @@
 :root{
-  --bg0:#fafafa;
-  --bg1:#f3f4f6;
-  --card:#ffffff;
-  --line:rgba(15,23,42,.12);
-  --ink:#0f172a;
-  --muted:rgba(15,23,42,.72);
-  --muted2:rgba(15,23,42,.56);
-  --focus:#2563eb;
+  --bg0:#F0E6CF;
+  --bg1:#E8DCBC;
+  --card:#F7EFDA;
+  --line:#D3C4A0;
+  --ink:#3A2E20;
+  --muted:#6E5B41;
+  --muted2:#8A7355;
+  --focus:#A2402F;
   --shadow:0 14px 40px rgba(2,6,23,.08);
-  --radius:18px;
+  --radius:6px;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;
   color:var(--ink);
-  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,"Noto Sans SC";
+  font-family:"Noto Sans SC","Microsoft YaHei",sans-serif;
   background:radial-gradient(1200px 520px at 18% -10%, #eef2ff 0%, transparent 55%),
              radial-gradient(1100px 520px at 90% -20%, #ecfeff 0%, transparent 55%),
              linear-gradient(180deg,var(--bg0),var(--bg1));
@@ -55,7 +55,7 @@ select,input[type="search"]{
   border:1px solid var(--line);
   border-radius: 6px;
   padding:10px 12px;
-  background:#fff;
+  background:#F7EFDA;
   color:var(--ink);
   min-width:140px;
 }
@@ -66,13 +66,13 @@ button{
   padding:10px 14px;
   color:#fff;
   cursor:pointer;
-  background:linear-gradient(180deg,#2563eb,#1d4ed8);
+  background:var(--ink);
   font-weight:900;
   letter-spacing:.01em;
 }
 button.ghost{
   color:var(--ink);
-  background:linear-gradient(180deg,#ffffff,#f8fafc);
+  background:#F7EFDA;
   border:1px solid var(--line);
 }
 button.mini{
@@ -83,11 +83,11 @@ button.mini{
 }
 button.danger{
   color:#991b1b;
-  background:linear-gradient(180deg,#ffffff,#fff1f2);
+  background:rgba(162,64,47,0.08);
   border:1px solid rgba(220,38,38,.25);
 }
 button:active{transform:translateY(1px)}
-button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outline-offset:2px}
+button:focus,select:focus,input:focus{outline:2px solid rgba(162,64,47,.35);outline-offset:2px}
 
 .pill{
   display:inline-flex;
@@ -96,7 +96,7 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
   padding:8px 12px;
   border-radius: 4px;
   border:1px solid var(--line);
-  background:linear-gradient(180deg,#ffffff,#f8fafc);
+  background:#F7EFDA;
   color:var(--muted);
   font-weight:900;
   white-space:nowrap;
@@ -111,7 +111,7 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
   border:1px solid var(--line);
   border-radius: 6px;
   padding:12px;
-  background:linear-gradient(180deg,#ffffff,#fbfdff);
+  background:#EFE4C6;
 }
 .item{cursor:grab;user-select:none}
 .item:active{cursor:grabbing}
@@ -131,8 +131,8 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
 .dropHint{margin-top:10px;color:var(--muted2);font-size:.92rem}
 .targetItems{margin-top:10px}
 
-.ok{border-color:rgba(16,185,129,.35);background:linear-gradient(180deg,#ffffff,#ecfdf5)}
-.bad{border-color:rgba(239,68,68,.35);background:linear-gradient(180deg,#ffffff,#fff1f2)}
+.ok{border-color:rgba(16,185,129,.35);background:rgba(81,114,75,0.12)}
+.bad{border-color:rgba(239,68,68,.35);background:rgba(162,64,47,0.08)}
 
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 .status{margin:10px 0 0;color:var(--muted);min-height:1.2em}
@@ -145,7 +145,7 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
   border:1px solid var(--line);
   border-radius: 6px;
   padding:12px;
-  background:linear-gradient(180deg,#ffffff,#f8fafc);
+  background:#F7EFDA;
   color:var(--muted);
   line-height:1.75;
   min-height:160px;
@@ -160,7 +160,7 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
   padding:10px 12px;
   border:1px solid var(--line);
   border-radius: 6px;
-  background:linear-gradient(180deg,#ffffff,#f8fafc);
+  background:#F7EFDA;
   color:var(--muted);
   line-height:1.7;
 }
@@ -179,7 +179,7 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
   padding:10px 12px;
   border:1px solid var(--line);
   border-radius: 6px;
-  background:linear-gradient(180deg,#ffffff,#f8fafc);
+  background:#F7EFDA;
   margin-bottom:10px;
 }
 .mistakeT{font-weight:950;line-height:1.55}
@@ -199,7 +199,7 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
   border:1px solid var(--line);
   border-radius: 6px;
   padding:12px;
-  background:linear-gradient(180deg,#ffffff,#f8fafc);
+  background:#F7EFDA;
 }
 .metric .v{font-size:1.5rem;font-weight:950;letter-spacing:-.02em}
 .metric .k{color:var(--muted2);font-weight:850;margin-top:4px}
@@ -209,7 +209,7 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
   border:1px solid var(--line);
   border-radius: 6px;
   padding:12px;
-  background:linear-gradient(180deg,#ffffff,#fbfdff);
+  background:#EFE4C6;
   display:flex;
   justify-content:space-between;
   gap:12px;
@@ -224,14 +224,14 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
   padding:6px 10px;
   border-radius: 4px;
   border:1px solid var(--line);
-  background:linear-gradient(180deg,#ffffff,#f8fafc);
+  background:#F7EFDA;
   color:var(--muted);
   font-weight:950;
   white-space:nowrap;
 }
-.badge.good{border-color:rgba(16,185,129,.35);color:#065f46;background:linear-gradient(180deg,#ffffff,#ecfdf5)}
-.badge.warn{border-color:rgba(245,158,11,.35);color:#7c2d12;background:linear-gradient(180deg,#ffffff,#fffbeb)}
-.badge.bad{border-color:rgba(239,68,68,.35);color:#7f1d1d;background:linear-gradient(180deg,#ffffff,#fff1f2)}
+.badge.good{border-color:rgba(16,185,129,.35);color:#065f46;background:rgba(81,114,75,0.12)}
+.badge.warn{border-color:rgba(245,158,11,.35);color:#7c2d12;background:rgba(140,106,47,0.12)}
+.badge.bad{border-color:rgba(239,68,68,.35);color:#7f1d1d;background:rgba(162,64,47,0.08)}
 .footer{margin-top:14px}
 
 @media (max-width: 520px){
@@ -376,7 +376,7 @@ details[open] summary { margin-bottom: 8px; }
 }
 .toast-msg {
   position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-  background: #333; color: #fff; padding: 10px 20px; border-radius: 8px;
+  background: #241B11; color: #F7EFDA; padding: 10px 20px; border-radius: 6px;
   font-size: 0.9rem; z-index: 9999; opacity: 0;
   transition: opacity 0.3s ease;
 }
