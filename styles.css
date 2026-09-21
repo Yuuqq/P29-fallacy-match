@@ -53,7 +53,7 @@ h2{margin:0 0 10px;font-size:1.1rem}
 input,select,button,textarea{font:inherit}
 select,input[type="search"]{
   border:1px solid var(--line);
-  border-radius:12px;
+  border-radius: 6px;
   padding:10px 12px;
   background:#fff;
   color:var(--ink);
@@ -62,7 +62,7 @@ select,input[type="search"]{
 input[type="search"]{min-width:240px;flex:1}
 button{
   border:0;
-  border-radius:999px;
+  border-radius: 4px;
   padding:10px 14px;
   color:#fff;
   cursor:pointer;
@@ -78,7 +78,7 @@ button.ghost{
 button.mini{
   padding:6px 10px;
   font-size:.86rem;
-  border-radius:999px;
+  border-radius: 4px;
   font-weight:900;
 }
 button.danger{
@@ -94,7 +94,7 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
   align-items:center;
   justify-content:center;
   padding:8px 12px;
-  border-radius:999px;
+  border-radius: 4px;
   border:1px solid var(--line);
   background:linear-gradient(180deg,#ffffff,#f8fafc);
   color:var(--muted);
@@ -109,7 +109,7 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
 
 .item,.target{
   border:1px solid var(--line);
-  border-radius:16px;
+  border-radius: 6px;
   padding:12px;
   background:linear-gradient(180deg,#ffffff,#fbfdff);
 }
@@ -143,7 +143,7 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
 
 .learnPanel{
   border:1px solid var(--line);
-  border-radius:16px;
+  border-radius: 6px;
   padding:12px;
   background:linear-gradient(180deg,#ffffff,#f8fafc);
   color:var(--muted);
@@ -159,7 +159,7 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
   margin-top:12px;
   padding:10px 12px;
   border:1px solid var(--line);
-  border-radius:14px;
+  border-radius: 6px;
   background:linear-gradient(180deg,#ffffff,#f8fafc);
   color:var(--muted);
   line-height:1.7;
@@ -168,7 +168,7 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
 .mistakes{
   margin-top:10px;
   border:1px dashed rgba(15,23,42,.18);
-  border-radius:16px;
+  border-radius: 6px;
   padding:12px;
   color:var(--muted);
   line-height:1.7;
@@ -178,7 +178,7 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
 .mistakeCard{
   padding:10px 12px;
   border:1px solid var(--line);
-  border-radius:14px;
+  border-radius: 6px;
   background:linear-gradient(180deg,#ffffff,#f8fafc);
   margin-bottom:10px;
 }
@@ -197,7 +197,7 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
 @media(max-width:900px){.summaryGrid{grid-template-columns:repeat(2, minmax(160px, 1fr))}}
 .metric{
   border:1px solid var(--line);
-  border-radius:16px;
+  border-radius: 6px;
   padding:12px;
   background:linear-gradient(180deg,#ffffff,#f8fafc);
 }
@@ -207,7 +207,7 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
 .libraryList{display:grid;gap:10px;margin-top:12px}
 .row{
   border:1px solid var(--line);
-  border-radius:16px;
+  border-radius: 6px;
   padding:12px;
   background:linear-gradient(180deg,#ffffff,#fbfdff);
   display:flex;
@@ -222,7 +222,7 @@ button:focus,select:focus,input:focus{outline:2px solid rgba(37,99,235,.35);outl
   align-items:center;
   justify-content:center;
   padding:6px 10px;
-  border-radius:999px;
+  border-radius: 4px;
   border:1px solid var(--line);
   background:linear-gradient(180deg,#ffffff,#f8fafc);
   color:var(--muted);
