@@ -1,22 +1,20 @@
 /**
- * 🔌 通用 Service Worker — 缓存优先策略
- * 适用于全部 50 个新闻工具项目。
- *
- * 策略：
- * 1. 安装时预缓存当前项目的核心文件
- * 2. 缓存优先 (Cache-First) 获取静态资源
- * 3. 网络优先 (Network-First) 获取 API 请求
- * 4. 离线回退页面
+ * P29 Service Worker — 缓存优先，仅服务本工具。
+ * 1. 安装时预缓存本工具核心文件
+ * 2. 样式与文档走网络优先，失败再读缓存
+ * 3. 其余同源 GET 走缓存优先，并在后台更新
  */
-const CACHE_NAME = "journalism-tool-P29-v4-edge-sense-2-3-4-r20260922";
+const CACHE_NAME = "p29-fallacy-match-v1";
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./manifest.json",
+  "./favicon.svg",
   "./styles.css",
-  "./modern-styles.css",
   "./app.js",
   "./pm-metrics.js",
+  "../shared/modern-styles.css",
+  "../shared/tool-chrome.css",
   "../shared/design-tokens.css",
   "../shared/dark-toggle.js",
   "../shared/cmd-palette.js",

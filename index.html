@@ -2,29 +2,33 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📰</text></svg>" />
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>P29 逻辑谬误连连看</title>
-    <link rel="stylesheet" href="../shared/design-tokens.css" />
-<link rel="stylesheet" href="./modern-styles.css" />
-<link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="../shared/design-tokens.css" />
+  <link rel="stylesheet" href="../shared/modern-styles.css" />
+  <link rel="stylesheet" href="../shared/tool-chrome.css" />
+  <link rel="stylesheet" href="./styles.css" />
 <meta name="description" content="逻辑谬误连连看。P29 逻辑谬误连连看" />
   <meta property="og:title" content="P29 逻辑谬误连连看" />
   <meta property="og:description" content="逻辑谬误连连看 — 前端纯静态新闻工具" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://yuuqq.github.io/P29-fallacy-match/" />
   <link rel="manifest" href="./manifest.json" />
-<style media="print">
-.gnav,.pedagogy-panel,.explore-section,[class*="dark-toggle"],button[aria-label]{display:none!important}
-body{background:#fff!important;color:#000!important;font-size:11pt}
-.app,main,.container{box-shadow:none!important;border:none!important;padding:0!important}
-a{color:#000!important;text-decoration:underline}
-a[href]::after{content:" (" attr(href) ")";font-size:9pt;color:#666}
-@page{margin:2cm}
-</style>
 </head>
 <body>
   <main aria-label="主内容区域" class="app">
+    <header class="tool-chrome" data-tool-id="P29">
+      <a class="tool-chrome__mark" href="../P00-dashboard/">新闻实验工具</a>
+      <span class="tool-chrome__id">P29</span>
+    </header>
+
+    <details class="tool-teach">
+      <summary>如何使用</summary>
+      <p>逻辑谬误是看似合理但实际不成立的论证方式。常见的谬误包括稻草人谬误、滑坡论证、人身攻击、诉诸权威等。识别这些谬误是媒介素养的核心技能。</p>
+      <p>选择关卡规模与模式后，把评论卡片拖入右侧谬误槽，或用卡片上的下拉框归类。可打开即时判定，再点判分查看错题。拖拽在部分移动端浏览器里不稳定，优先使用下拉框。进度与掌握度只保存在本机。</p>
+    </details>
+
     <header class="hero card">
       <div class="heroMain">
         <h1>逻辑谬误连连看</h1>
@@ -36,8 +40,6 @@ a[href]::after{content:" (" attr(href) ")";font-size:9pt;color:#666}
         <button id="resetProgressBtn" type="button" class="ghost danger">重置进度</button>
       </div>
     </header>
-
-    <section class="card"><details class="teach-card" open><summary>🎓 逻辑谬误与媒介素养</summary><p>逻辑谬误是看似合理但实际不成立的论证方式。常见的谬误包括稻草人谬误、滑坡论证、人身攻击、诉诸权威等。识别这些谬误是媒介素养的核心技能。</p></details></section>
 
     <section class="grid">
       <article class="card">
@@ -82,7 +84,7 @@ a[href]::after{content:" (" attr(href) ")";font-size:9pt;color:#666}
           <button id="nextBtn" type="button" class="ghost">下一关</button>
           <button id="resetRoundBtn" type="button" class="ghost">重置本关</button>
         </div>
-        <p id="status" class="status" aria-live="polite">状态: 未开始</p>
+        <p id="status" class="status" role="status" aria-live="polite">状态: 未开始</p>
 
         <details class="tips">
           <summary>学习提示（识别信号）</summary>
@@ -123,24 +125,13 @@ a[href]::after{content:" (" attr(href) ")";font-size:9pt;color:#666}
       <div id="libraryList" class="libraryList"></div>
     </section>
 
-    <footer class="footer subtle">
-      <p><strong>隐私说明：</strong>进度与掌握度保存于本机浏览器（localStorage），不会上传。</p>
-      <p><strong>提示：</strong>拖拽在部分移动端浏览器兼容性有限，推荐使用每张卡片的“归类下拉框”。</p>
+    <footer class="tool-footer">
+      数据边界以附录 A 为准：能在本机完成的计算不主动外发；示例数据仅供课堂；本工具输出不得单独当作结论。
+      <a href="../P00-dashboard/">返回工具箱</a>
     </footer>
   </main>
   <script src="./pm-metrics.js" defer></script>
 <script src="./app.js" defer></script>
-
-  <!-- Privacy Notice -->
-  <div style="text-align:center;padding:12px 16px;font-size:12px;color:#888;border-top:1px solid #eee;margin-top:24px;">
-    🔒 隐私提示：本工具所有数据处理均在您的浏览器本地完成，不会上传任何数据至服务器。
-  </div>
-
-  <!-- Cross-Project Navigation -->
-  <nav aria-label="工具箱导航" style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;font-size:13px;border-top:1px solid #e5e5e5;margin-top:16px;color:#666;">
-    <a href="https://yuuqq.github.io/journalism-toolbox/" style="text-decoration:none;">📋 工具箱导航</a>
-    <span style="opacity:.4">P29</span>
-  </nav>
 
 <script src="../shared/dark-toggle.js" defer></script>
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{})}</script>

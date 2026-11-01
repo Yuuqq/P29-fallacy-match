@@ -322,8 +322,8 @@
       const feed = itemEl.querySelector(".feedback");
       if (feed) {
         if (!id) feed.textContent = "未归类：请选择一个类型";
-        else if (id === answer) feed.textContent = "✅ 归类正确";
-        else feed.textContent = `❌ 更像：${answerName}`;
+        else if (id === answer) feed.textContent = "归类正确";
+        else feed.textContent = `更像：${answerName}`;
       }
     }
 
@@ -377,7 +377,7 @@
       const assignedName = assigned ? fallacyById[assigned]?.name || assigned : "";
       const feedback = item.querySelector(".feedback");
       if (feedback) {
-        feedback.textContent = assigned ? (isOk ? `✅ 正确：${answerName}` : `❌ 你选：${assignedName}；正确：${answerName}`) : `❌ 未归类；正确：${answerName}`;
+        feedback.textContent = assigned ? (isOk ? `正确：${answerName}` : `你选：${assignedName}；正确：${answerName}`) : `未归类；正确：${answerName}`;
       }
 
       if (!isOk) {
@@ -439,7 +439,7 @@
       item.classList.add("ok");
       const answer = item.dataset.answerId || "";
       const feedback = item.querySelector(".feedback");
-      if (feedback) feedback.textContent = `✅ 答案：${fallacyById[answer]?.name || answer}`;
+      if (feedback) feedback.textContent = `答案：${fallacyById[answer]?.name || answer}`;
     });
     renderStatusLine("已显示答案（不计入掌握度）");
   }
